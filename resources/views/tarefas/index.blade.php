@@ -13,7 +13,6 @@
                     <th>Título</th>
                     <th>Descrição</th>
                     <th>Data Limite</th>
-                    <th>Status</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -22,11 +21,14 @@
                     <tr>
                         <td>{{ $tarefa['titulo'] }}</td>
                         <td>{{ $tarefa['descricao'] }}</td>
-                        <td>{{ $tarefa['data_limite'] }}</td>
-                        <td><span class="badge text-bg-success">{{ $tarefa['status'] }}</span></td>
+                        <td>{{ $tarefa['dataLimite'] }}</td>
                         <td>
-                            <a href="{{ route('tarefas.edit') }}" class="btn btn-outline-success btn-sm me-1">Editar</a>
-                            <a href="#" class="btn btn-outline-danger btn-sm">Excluir</a>
+                            <a href="{{ route('tarefas.edit', $tarefa['id']) }}" class="btn btn-outline-success btn-sm me-1">Editar</a>
+                            <form action="{{ route('tarefas.delete', $tarefa['id']) }}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta tarefa?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Excluir</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
