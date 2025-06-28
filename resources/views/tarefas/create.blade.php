@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">Criar Tarefa</h2>
 
-    <form method="post" action="{{ route('tarefas.store') }}" class="mx-auto" style="max-width: 600px;">
+    <form method="POST" action="{{ route('tarefas.store') }}" class="mx-auto" style="max-width: 600px;">
         @csrf
 
         <div class="mb-4">

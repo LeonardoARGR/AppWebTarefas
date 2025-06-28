@@ -82,11 +82,16 @@
         <div class="img-container">
           <img class="img-fluid img-crop img-thumbnail" src="https://cdn-icons-png.flaticon.com/512/6543/6543634.png" alt="Imagem do usuário">
         </div>
-        <h1>Olá, usuário!</h1>
+        <h1>Bem vindo!</h1>
         
         <a href="{{ route('usuario.index') }}" class="user-link">Meus dados</a>
         <a href="{{ route('tarefas.index') }}" class="user-link">Minhas tarefas</a>
-        <a class="user-link">Alterar imagem</a>
+        <a href="#" class="user-link">Alterar imagem</a>
+
+        <form method="POST" id="loginForm" action="{{ route('auth.logout') }}">
+            @csrf
+            <button type="submit" class="btn btn-login w-100">Sair</button>
+        </form>
       </aside>
 
       <!-- Conteúdo principal -->

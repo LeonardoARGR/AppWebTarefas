@@ -52,27 +52,27 @@
 <div class="register-container">
     <h2 class="text-center register-title">Cadastrar</h2>
 
-    <form id="registerForm">
+    <form id="registerForm" method="POST" action="{{ route('auth.cadastrar') }}">
         @csrf
 
         <div class="mb-3">
             <label for="name" class="form-label">Nome completo</label>
-            <input type="text" class="form-control" id="name" placeholder="Digite seu nome" required>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Digite seu nome" required>
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">E-mail</label>
-            <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail" required>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu e-mail" required>
         </div>
 
         <div class="mb-3">
             <label for="password" class="form-label">Senha</label>
-            <input type="password" class="form-control" id="password" placeholder="Digite sua senha" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha" required>
         </div>
 
         <div class="mb-4">
             <label for="bio" class="form-label">Bio</label>
-            <textarea class="form-control" id="bio" rows="3" placeholder="Fale um pouco sobre você..."></textarea>
+            <textarea class="form-control" id="bio" rows="3" name="bio" placeholder="Fale um pouco sobre você..."></textarea>
         </div>
 
         <button type="submit" class="btn btn-register w-100">Criar Conta</button>

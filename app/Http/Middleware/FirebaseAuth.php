@@ -11,7 +11,7 @@ class FirebaseAuth
     public function handle(Request $request, Closure $next): Response
     {
         if (!Session::has('firebase_user')) {
-            return redirect('/login');
+            return redirect('/login')->withErrors(['auth' => 'Você precisa estar logado.']);
         }
         return $next($request);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Exception;
 
 class AuthController extends Controller
 {
@@ -28,6 +29,7 @@ class AuthController extends Controller
             'returnSecureToken' => true
         ]);
 
+        error_log($response, 0);
         if ($response->successful()) {
             $data = $response->json();
             Session::put('firebase_user', [
@@ -59,9 +61,13 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
+        try
+        {
+            $request->validate([
             'email' => 'required|email',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|min:6',
+            'name' => 'required|min:3',
+            'bio'
         ]);
 
         $apiKey = env('FIREBASE_API_KEY');
@@ -79,9 +85,33 @@ class AuthController extends Controller
                 'email' => $data['email'],
                 'uid' => $data['localId'],
             ]);
+        
+        $payload = [
+            'fields' => [
+                'name' => ['stringValue' => $request->name],
+                'bio' => ['stringValue' => $request->bio],
+            ]
+        ];
+
+        $idToken =$data['idToken'];
+        $responseData = Http::withHeaders([
+            'Authorization' => "Bearer {$idToken}",
+            'Content-Type' => 'application/json',
+        ])->post("https://firestore.googleapis.com/v1/projects/acessotarefas-3c92e/databases/(default)/documents/users", $payload);
+
+
             return redirect('/');
+            
         }
 
-        return redirect()->back()->withErrors(['email' => 'Erro ao cadastrar. Talvez o e-mail já esteja em uso.']);
+        error_log($response->body());
+        echo $response;
+
+        }catch(Exception $ex)
+        {
+            error_log($ex);
+            echo 'Caught exception: ',  $ex->getMessage(), "\n";
+            return redirect()->back()->withErrors(['email' => 'Erro ao cadastrar. Talvez o e-mail já esteja em uso.']);
+        }
     }
 }

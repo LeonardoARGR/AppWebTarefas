@@ -24,16 +24,16 @@
     <div class="login-container">
         <h2 class="text-center login-title">Entrar</h2>
 
-        <form id="loginForm">
+        <form method="POST" id="loginForm" action="{{ route('logar') }}">
             @csrf
             <div class="mb-3">
                 <label for="email" class="form-label">E-mail</label>
-                <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu e-mail" required>
             </div>
 
             <div class="mb-4">
                 <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="password" placeholder="Digite sua senha" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha" required>
             </div>
 
             <button type="submit" class="btn btn-login w-100">Entrar</button>

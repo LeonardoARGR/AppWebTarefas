@@ -6,7 +6,7 @@ use App\Http\Middleware\EnsureUserIsAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('logar');
 
 Route::get('/cadastro', [AuthController::class, 'showRegisterForm'])->name('auth.cadastro');
 Route::post('/cadastro', [AuthController::class, 'register'])->name('auth.cadastrar');  
