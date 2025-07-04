@@ -67,7 +67,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
             'name' => 'required|min:3',
-            'bio'
+            'bio' => 'nullable|string'
         ]);
 
         $apiKey = env('FIREBASE_API_KEY');
@@ -86,30 +86,41 @@ class AuthController extends Controller
                 'uid' => $data['localId'],
             ]);
         
+        $uid = $data['localId'];    
+
         $payload = [
             'fields' => [
                 'name' => ['stringValue' => $request->name],
-                'bio' => ['stringValue' => $request->bio],
+                'bio' => ['stringValue' => $request->bio ?? ''],
             ]
         ];
 
         $idToken =$data['idToken'];
+        $uid = $data['localId'];
         $responseData = Http::withHeaders([
             'Authorization' => "Bearer {$idToken}",
             'Content-Type' => 'application/json',
-        ])->post("https://firestore.googleapis.com/v1/projects/acessotarefas-3c92e/databases/(default)/documents/users", $payload);
+    ])->patch("https://firestore.googleapis.com/v1/projects/acessotarefas-3c92e/databases/(default)/documents/users/{$uid}", $payload);
 
-
-            return redirect('/');
-            
+    if (!$responseData->successful()) {
+            error_log("Firestore status: " . $responseData->status());
+            error_log("Firestore response: " . $responseData->body());
+            dd($responseData->json());
         }
 
+        echo $responseData->json();
+        echo $data;
+        echo $responseData;     
+        }
+
+        
         error_log($response->body());
         echo $response;
 
         }catch(Exception $ex)
         {
             error_log($ex);
+            dd($ex);
             echo 'Caught exception: ',  $ex->getMessage(), "\n";
             return redirect()->back()->withErrors(['email' => 'Erro ao cadastrar. Talvez o e-mail já esteja em uso.']);
         }
